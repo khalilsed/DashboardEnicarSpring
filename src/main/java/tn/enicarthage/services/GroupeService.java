@@ -32,10 +32,11 @@ public class GroupeService implements IGroupeService {
 			 List<Groupe> l = (List<Groupe>) GroupeRepository.findAll();
 			 return l;
 	   }
+
 	   @Override
 	   public Groupe getGroupeById(long id) {
 		   return GroupeRepository.findById(id);
-       }
+	   }
 	   @Override
 	   public long countGroupes() {
 	        return GroupeRepository.count();

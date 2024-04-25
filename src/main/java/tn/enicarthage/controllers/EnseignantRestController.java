@@ -48,33 +48,33 @@ public class EnseignantRestController {
            }
            return sb.toString();
        }
-       
-	   @PostMapping("/addEnseignant")
-	   void ajouterEnseignant(@RequestBody Enseignant e) throws MessagingException {
-		   BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
-		   String result = alphaNumericString(10);
-		    e.setUsername(e.getNom()+" "+e.getPrenom()+" "+alphaNumericString(2));
-		    e.setPassword(result);
-		    //e.setPassword(encoder.encode(result));
-		    iEnseignantService.ajouterEnseignant(e);
 
-	        MimeMessage message =mailSender.createMimeMessage();
-	        MimeMessageHelper helper =new MimeMessageHelper(message,true);
-	    
-	        String mailSubject = "Bienvenue chez Ecole nationale d'ingénieur de carthage" ;
-	        String  mailContent=  "<p><b>Votre nom d'utilisateur est :</b>"+e.getUsername()+"</p>";
-	        mailContent += "<p><b>Votre mot de passe est :</b>"+result+"</p>";
-	        mailContent += "<hr><img src:='cid:logo'/>";
+	@PostMapping("/addEnseignant/{idG}")
+	void ajouterEnseignant(@RequestBody Enseignant e,@PathVariable("idG") int idG) throws MessagingException {
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
+		String result = alphaNumericString(10);
+		e.setUsername(e.getNom() + " " + e.getPrenom() + " " + alphaNumericString(2));
+		e.setPassword(result);
+		 e.setPassword(encoder.encode(result));
+		iEnseignantService.ajouterEns(e,idG);
 
-	        helper.setTo(e.getMail());
-	        helper.setSubject(mailSubject);
-	        helper.setText(mailContent, true);
+		MimeMessage message = mailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-	        ClassPathResource path = new ClassPathResource("/static/logo.png");
-	        helper.addInline("logo", path);
-	        mailSender.send(message);
+		String mailSubject = "Bienvenue chez Ecole nationale d'ingénieur de carthage";
+		String mailContent = "<p><b>Votre nom d'utilisateur est :</b>" + e.getUsername() + "</p>";
+		mailContent += "<p><b>Votre mot de passe est :</b>" + result + "</p>";
+		mailContent += "<hr><img src:='cid:logo'/>";
 
-	   }
+		helper.setTo(e.getMail());
+		helper.setSubject(mailSubject);
+		helper.setText(mailContent, true);
+
+		ClassPathResource path = new ClassPathResource("/static/logo.png");
+		helper.addInline("logo", path);
+		mailSender.send(message);
+
+	}
 	   @PutMapping("/updateEnseignant")
 	   public void modifierEnseignant(@RequestBody Enseignant Enseignant) {
     	   iEnseignantService.modifierEnseignant(Enseignant);

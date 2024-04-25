@@ -7,6 +7,7 @@ import tn.enicarthage.entities.Enseignant;
 
 public interface IEnseignantService {
 	public void ajouterEnseignant(Enseignant e);
+    public void ajouterEns(Enseignant e,int idGrp);
     public void supprimerEnseignantById(long id);
     public Enseignant getEnseignantById(long id);
     public Enseignant getEnseignantByNom(String enseignantNom);
