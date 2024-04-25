@@ -9,6 +9,8 @@ public interface IMatiereService {
       public void supprimerMatiereById(int id);
       public void modifierMatiere(Matiere m);
       public List<Matiere> listMatieres();
-      public Matiere getMatiereByNom(String m);
+      public Matiere getMatiereByNom(Matiere m);
+      public Matiere getMatiereByNom2(String nomMat);
       public Matiere getMatiereById(int id);
+      public long countMatieres();
 }

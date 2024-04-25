@@ -11,4 +11,6 @@ import tn.enicarthage.entities.Etudiant_local;
 public interface EtudiantLocalRepository extends CrudRepository<Etudiant_local,Long>{
 	public Optional<Etudiant_local> findByUsernameAndPassword(String  username,String password);
 	public Etudiant_local findByUsername(String  username);
+	
+	
 }

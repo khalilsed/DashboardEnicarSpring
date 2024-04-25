@@ -1,6 +1,11 @@
 package tn.enicarthage.entities;
 
+import java.util.HashSet;
+
+import java.util.Set;
+
 import javax.persistence.Column;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -34,9 +39,17 @@ public class Note {
 		@Column( name = "NOTE_TYPE")
 		@Enumerated(EnumType.STRING)
 		noteType type;
-		@Column( name = "VNOTE")
-		long vnote;
+		@Column( name = "VNOTE") 
+		float vnote;
 		@OneToOne
 		private Matiere mat;
+		@javax.persistence.ManyToMany(mappedBy = "notes", cascade = javax.persistence.CascadeType.ALL)
+	    private Set<Etudiant_local> etudiants = new HashSet<>();
 		public Note() {}
+		public Note(int id2, noteType type2, float vnote2, Matiere mat2) {
+			this.id=id2;
+			this.type=type2;
+			this.vnote=vnote2;
+			this.mat=mat2;
+		}
 }	

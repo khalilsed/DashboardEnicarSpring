@@ -49,6 +49,7 @@ public abstract class  Etudiant extends User implements Serializable {
    
    
    public Etudiant() {
+		// TODO Auto-generated constructor stub
 	  Adresse a=new Adresse();
 	  this.setAdr(a);
 	}

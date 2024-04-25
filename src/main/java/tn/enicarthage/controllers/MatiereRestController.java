@@ -1,10 +1,13 @@
 package tn.enicarthage.controllers;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +17,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import tn.enicarthage.entities.Enseignant;
 import tn.enicarthage.entities.Matiere;
-import tn.enicarthage.services.IEnseignantService;
 import tn.enicarthage.services.IMatiereService;
 
 @RestController
@@ -25,8 +26,6 @@ import tn.enicarthage.services.IMatiereService;
 public class MatiereRestController {
 	   @Autowired 
 	   IMatiereService iMatiereService;
-	   @Autowired
-	   IEnseignantService iEnseignantService;
 	   @PostMapping("/addMatiere")
 	   void ajouterMatiere(@RequestBody Matiere Matiere) {
 		   iMatiereService.ajouterMatiere(Matiere);
@@ -45,32 +44,44 @@ public class MatiereRestController {
 		   List<Matiere> l = iMatiereService.listMatieres();
 		   return l;
 	   }
-	   @GetMapping("/getMatiere/{Matiere-nom}")
-	   public Matiere getMatiere(@PathVariable("Matiere-nom") String m){
+	   @GetMapping("/getMatiere")
+	   public Matiere getMatiere(Matiere m){
 		   Matiere mat = iMatiereService.getMatiereByNom(m);
 		   return mat;
 	   }
-	   @GetMapping("/getEnseignantByMatiere/{id-mat}")
-	   public Set<Enseignant> getEnseignantByMatiere(@PathVariable("id-mat") int idMat){
-		   Matiere mat = iMatiereService.getMatiereById(idMat);
-		   if(mat != null) {
-			   return mat.getEnseignants();
-		   }else {
-			   return new HashSet<>();
-		   }
-
+	   
+	   @GetMapping("/getMatiereByName/{nomMat}")
+	   public Matiere getMatiere(@PathVariable("nomMat") String m){
+		   Matiere mat = iMatiereService.getMatiereByNom2(m);
+		   return mat;
+	   }
+	   
+	   @GetMapping("/getEnseignantsByMatiere/{id_mat}")
+	   public Set<Enseignant> getEnseignantsByMatiere(@PathVariable("id_mat") int idMat) {
+	       Matiere matiere = iMatiereService.getMatiereById(idMat);
+	       if (matiere != null) {
+	           return matiere.getEnseignants();
+	       } else {
+	           return new HashSet<>();
+	       }
 	   }
 
-	@PostMapping("/addEnseignantToMatiere/{idMat}")
-	Matiere ajouterEnseignantToMatiere(@RequestBody String enseignant, @PathVariable("idMat") int idMat) {
+	@GetMapping("/getEnseignantByMatiere/{id-mat}")
+	public Set<Enseignant> getEnseignantByMatiere(@PathVariable("id-mat") int idMat){
+		Matiere mat = iMatiereService.getMatiereById(idMat);
+		if(mat != null) {
+			return mat.getEnseignants();
+		}else {
+			return new HashSet<>();
+		}
 
-		Matiere matiere = iMatiereService.getMatiereById(idMat);
-
-		matiere.getEnseignants().add(iEnseignantService.getEnseignantByNom(enseignant));
-
-		iMatiereService.ajouterMatiere(matiere);
-		return matiere;
 	}
+	   
+	   @GetMapping("/matieres/count")
+	    public ResponseEntity<Long> countMatieres() {
+	        long count = iMatiereService.countMatieres();
+	        return new ResponseEntity<>(count, HttpStatus.OK);
+	    }
 	
 
 }

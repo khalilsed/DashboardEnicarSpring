@@ -14,5 +14,5 @@ public interface IEtudiantEtrangerService {
        public List<Etudiant_etranger> listEtudiantEtranger();
        public Optional<Etudiant_etranger> getEtudiantEtrangerLogged(String username,String passwd);
        public Etudiant_etranger getEtudiantEtrangerByUsername(String username);
-
+       public long countEtudiantEtranger();
 }

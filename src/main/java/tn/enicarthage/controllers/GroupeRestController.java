@@ -3,6 +3,8 @@ package tn.enicarthage.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,11 +40,12 @@ public class GroupeRestController {
 	   }
 	   
 	   @PostMapping("/addMatiereToGroupe/{idGrp}")
-	   Groupe ajouterMatiereToGroupe(@PathVariable("idGrp") long idGrp,@RequestBody String mat) {
+	   Groupe ajouterMatiereToGroupe(@PathVariable("idGrp") long idGrp, @RequestBody String nomMat) {
 		   
 	        Groupe groupe = iGroupeService.getGroupeById(idGrp);
+	        	Matiere mat = iMatiereService.getMatiereByNom2(nomMat);
 
-	        groupe.getMatieres().add(iMatiereService.getMatiereByNom(mat));
+	        groupe.getMatieres().add(mat);
 
 	        iGroupeService.ajouterGroupe(groupe);
 	        return groupe;
@@ -65,6 +68,12 @@ public class GroupeRestController {
 	   public Groupe getEnseignantById(Groupe g){
 		   return(iGroupeService.getGroupeById(g.getId()));
 	   }
+	   
+	   @GetMapping("/groupes/count")
+	    public ResponseEntity<Long> countMatieres() {
+	        long count = iGroupeService.countGroupes();
+	        return new ResponseEntity<>(count, HttpStatus.OK);
+	    }
 	   
 
 }

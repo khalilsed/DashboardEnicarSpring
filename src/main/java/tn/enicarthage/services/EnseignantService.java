@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import tn.enicarthage.entities.Enseignant;
@@ -22,11 +23,7 @@ public class EnseignantService implements IEnseignantService{
 	   @Override
 	   public Enseignant getEnseignantById(long id) {
 		   return enseignantRepository.findById(id).get();
-	   }
-	   @Override
-	   public Enseignant getEnseignantByNom(String enseignantNom) {
-		return enseignantRepository.findByNom(enseignantNom);
-	}
+       }
 	   @Override
 	   public void modifierEnseignant(Enseignant e) {
 		   enseignantRepository.save(e);
@@ -45,7 +42,25 @@ public class EnseignantService implements IEnseignantService{
 	   
 	   @Override
 	   public Optional<Enseignant> getEnseignantLogged(String username,String passwd){
-		   	return enseignantRepository.findByUsernameAndPassword(username, passwd);	 
+		   
+		   return enseignantRepository.findByUsernameAndPassword(username, passwd);
+		  /* Optional<Enseignant> enseignantOptional = enseignantRepository.findByUsername(username);
+		   BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
+	        if (enseignantOptional.isPresent()) {
+	            Enseignant enseignant = enseignantOptional.get();
+	            if (encoder.matches(passwd, enseignant.getPassword())) {
+	                return enseignantOptional;
+	            }
+	        }
+	        return Optional.empty();*/
 	   }
+	   @Override
+	   public long countEnsignants() {
+	        return enseignantRepository.count();
+	    }
+	@Override
+	public Enseignant getEnseignantByNom(String enseignantNom) {
+		return enseignantRepository.findByNom(enseignantNom);
+	}
 	   
 }

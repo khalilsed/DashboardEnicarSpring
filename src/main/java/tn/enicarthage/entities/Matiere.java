@@ -45,9 +45,7 @@ public class Matiere implements Serializable{
 	@OneToMany( cascade =CascadeType.ALL, mappedBy = "mat")
 	@JsonIgnore
 	Set<Enseignant> enseignants=new HashSet<Enseignant>();
-//	@OneToMany( cascade =CascadeType.ALL, mappedBy = "mat")
-//	Set<Enseignant> enseignants= new HashSet<Enseignant>();
-
+	
 	
 	public Matiere(){};
 	

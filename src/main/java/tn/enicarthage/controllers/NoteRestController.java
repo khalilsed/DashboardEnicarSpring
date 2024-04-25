@@ -1,9 +1,10 @@
 package tn.enicarthage.controllers;
 
 import java.util.List;
-
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import tn.enicarthage.entities.Etudiant_etranger;
 import tn.enicarthage.entities.Etudiant_local;
@@ -42,7 +45,7 @@ public class NoteRestController {
 			   et.getNotes().add(note);
 			   iEtudiantEtrangerService.modifierEtudiantEtranger(et);
 		   }
-
+		   
 	   }
 	   @PutMapping("/updateNote")
 	   public void modifierNote(@RequestBody Note Note) {
@@ -52,12 +55,14 @@ public class NoteRestController {
 	   public void supprimerNoteById(@PathVariable("Note-id") int id) {
     	   iNoteService.supprimerNoteById(id);
        }
-
+	   
 	   @GetMapping("/getAllNotes")
 	   public List<Note> listNotes(){
 		   List<Note> l = iNoteService.listNotes();
 		   return l;
 	   }
-
+	   
+	   
+	
 
 }

@@ -36,4 +36,8 @@ public class GroupeService implements IGroupeService {
 	   public Groupe getGroupeById(long id) {
 		   return GroupeRepository.findById(id);
        }
+	   @Override
+	   public long countGroupes() {
+	        return GroupeRepository.count();
+	    }
 }

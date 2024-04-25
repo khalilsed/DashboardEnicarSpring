@@ -44,5 +44,9 @@ public class EtudiantEtrangerService implements IEtudiantEtrangerService{
 	   public Etudiant_etranger getEtudiantEtrangerByUsername(String username){
 		   	return etudiantEtrangerRepository.findByUsername(username);	 
 	   }
+	   @Override
+	   public long countEtudiantEtranger() {
+		   return etudiantEtrangerRepository.count();
+	   }
 	   
 }

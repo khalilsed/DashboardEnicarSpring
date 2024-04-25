@@ -2,6 +2,7 @@ package tn.enicarthage.services;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,16 +24,23 @@ public class MatiereService implements IMatiereService{
      }
 	   @Override
 	   public void supprimerMatiereById(int id) {
-  	   MatiereRepository.deleteById((long) id);
+//  	   MatiereRepository.deleteById((int) id);
      }
 	   @Override
-	   public Matiere getMatiereByNom(String m) {
+	   public Matiere getMatiereByNom(Matiere m) {
+  	   return MatiereRepository.findByNom(m.getNom());
+     }
+	   
+	   @Override
+	   public Matiere getMatiereByNom2(String m) {
   	   return MatiereRepository.findByNom(m);
      }
 	   @Override
 	   public Matiere getMatiereById(int id) {
   	   return MatiereRepository.findById(id);
      }
+	   
+	   
 	  
 	   
 	   @Override
@@ -41,4 +49,9 @@ public class MatiereService implements IMatiereService{
 			 List<Matiere> l = (List<Matiere>) MatiereRepository.findAll();
 			 return l;
 	   }
+	   
+	   @Override
+	   public long countMatieres() {
+	        return MatiereRepository.count();
+	    }
 }

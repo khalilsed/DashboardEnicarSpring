@@ -23,7 +23,7 @@ public class ResultatService implements IResultatService{
      }
 	   @Override
 	   public void supprimerResultatById(int id) {
-  	   ResultatRepository.deleteById((long) id);
+//  	   ResultatRepository.deleteById((Long) id);
      }
 	   
 	   @Override

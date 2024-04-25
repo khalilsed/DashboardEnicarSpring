@@ -25,6 +25,9 @@ import lombok.experimental.FieldDefaults;
 @Entity
 @Table (name =  "T_ETUD_ETR")
 public class Etudiant_etranger extends Etudiant implements Serializable{
+  /**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 	@Column( name = "ETUD_PASS")
     int numPass;
@@ -33,7 +36,7 @@ public class Etudiant_etranger extends Etudiant implements Serializable{
 	@OneToMany(cascade = CascadeType.REMOVE)
 	   Set<Note> Notes=new HashSet<Note>();
 	@OneToMany(cascade = CascadeType.REMOVE)
-		Set<Absence> Absences=new HashSet<Absence>();
+	   Set<Absence> Absences=new HashSet<Absence>();
     public Etudiant_etranger() {
     }
 }

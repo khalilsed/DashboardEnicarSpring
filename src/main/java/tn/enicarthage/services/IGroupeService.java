@@ -10,5 +10,6 @@ public interface IGroupeService {
       public void modifierGroupe(Groupe u);
       public List<Groupe> listGroupes();
       public Groupe getGroupeById(long id);
+      public long countGroupes();
 
 }

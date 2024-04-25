@@ -9,6 +9,8 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -96,5 +98,10 @@ public class EtudiantEtrangerRestController {
 	   public Etudiant_etranger getEtudiantEtrangerByUsername(Etudiant_etranger e){
 		   return(iEtudiantEtrangerService.getEtudiantEtrangerByUsername(e.getUsername()));
 	   }
+	   @GetMapping("/etudiantsEtranger/count")
+	    public ResponseEntity<Long> countMatieres() {
+	        long count = iEtudiantEtrangerService.countEtudiantEtranger();
+	        return new ResponseEntity<>(count, HttpStatus.OK);
+	    }
 	
 }

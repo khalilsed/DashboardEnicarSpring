@@ -9,8 +9,11 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import tn.enicarthage.entities.Enseignant;
-import tn.enicarthage.entities.Matiere;
 import tn.enicarthage.services.IEnseignantService;
 import tn.enicarthage.services.IMatiereService;
 
@@ -32,10 +34,10 @@ public class EnseignantRestController {
 	   @Autowired 
 	   IEnseignantService iEnseignantService;
 	   @Autowired
-	   IMatiereService iMatiereService;
+		IMatiereService iMatiereService;
 	   @Autowired
        private JavaMailSender mailSender;
-	   
+	  
 	   public static String alphaNumericString(int len) {
            String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
            Random rnd = new Random();
@@ -49,9 +51,11 @@ public class EnseignantRestController {
        
 	   @PostMapping("/addEnseignant")
 	   void ajouterEnseignant(@RequestBody Enseignant e) throws MessagingException {
-
+		   BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
+		   String result = alphaNumericString(10);
 		    e.setUsername(e.getNom()+" "+e.getPrenom()+" "+alphaNumericString(2));
-		    e.setPassword(alphaNumericString(10));
+		    e.setPassword(result);
+		    //e.setPassword(encoder.encode(result));
 		    iEnseignantService.ajouterEnseignant(e);
 
 	        MimeMessage message =mailSender.createMimeMessage();
@@ -59,7 +63,7 @@ public class EnseignantRestController {
 	    
 	        String mailSubject = "Bienvenue chez Ecole nationale d'ingénieur de carthage" ;
 	        String  mailContent=  "<p><b>Votre nom d'utilisateur est :</b>"+e.getUsername()+"</p>";
-	        mailContent += "<p><b>Votre mot de passe est :</b>"+e.getPassword()+"</p>";
+	        mailContent += "<p><b>Votre mot de passe est :</b>"+result+"</p>";
 	        mailContent += "<hr><img src:='cid:logo'/>";
 
 	        helper.setTo(e.getMail());
@@ -85,7 +89,6 @@ public class EnseignantRestController {
 		   List<Enseignant> l = iEnseignantService.listEnseignant();
 		   return l;
 	   }
-
 	   @GetMapping("/getEnseignantLogged")
 	   public Optional<Enseignant> getEnseignantLogged(@RequestParam String username,@RequestParam String password){
 		   
@@ -95,15 +98,21 @@ public class EnseignantRestController {
 	   public Enseignant getEnseignantById(Enseignant e){
 		   return(iEnseignantService.getEnseignantById(e.getId()));
 	   }
-		@PostMapping("/addMatiereToEnseignant/{idMat}")
-		Enseignant ajouterMatiereToEnseignant(@RequestBody String enseignant, @PathVariable("idMat") int idMat) {
+	   
+	   @GetMapping("/ensignants/count")
+	    public ResponseEntity<Long> countMatieres() {
+	        long count = iEnseignantService.countEnsignants();
+	        return new ResponseEntity<>(count, HttpStatus.OK);
+	    }
+	@PostMapping("/addMatiereToEnseignant/{idMat}")
+	Enseignant ajouterMatiereToEnseignant(@RequestBody String enseignant, @PathVariable("idMat") int idMat) {
 
-			Enseignant ens = iEnseignantService.getEnseignantByNom(enseignant);
+		Enseignant ens = iEnseignantService.getEnseignantByNom(enseignant);
 
-			ens.setMat(iMatiereService.getMatiereById(idMat));
-//					.add(iEnseignantService.getEnseignantByNom(enseignant));
+		ens.setMat(iMatiereService.getMatiereById(idMat));
 
-			iEnseignantService.ajouterEnseignant(ens);
+		iEnseignantService.ajouterEnseignant(ens);
 		return ens;
-		}
+	}
+
 }

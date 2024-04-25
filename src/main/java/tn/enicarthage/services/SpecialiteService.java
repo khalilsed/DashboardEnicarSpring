@@ -23,7 +23,7 @@ public class SpecialiteService implements ISpecialiteService {
      }
 	   @Override
 	   public void supprimerSpecialiteById(int id) {
-  	   SpecialiteRepository.deleteById((long) id);
+//  	   SpecialiteRepository.deleteById((Long) id);
      }
 	   
 	   @Override
